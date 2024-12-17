@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Count
 
 from .models import Client
 from .models import Salon
@@ -11,7 +12,12 @@ from .models import Appointment
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("phone_number", "full_name",)
+
+    def total_clients_count(self, obj):
+        return Client.objects.count()
+
+    total_clients_count.short_description = "Общее количество клиентов"
 
 
 @admin.register(Salon)
