@@ -2,3 +2,4 @@ Django==5.1.4
 django-debug-toolbar==4.4.6
 dj-database-url==2.3.0
 environs==11.2.1
+django-phonenumber-field[phonenumberslite]==8.0.0
