@@ -6,7 +6,11 @@ from phonenumber_field.modelfields import PhoneNumberField
 class Client(models.Model):
     """Клиент"""
 
-    phone_number = PhoneNumberField("Номер телефона", null=True, region="RU")
+    phone_number = PhoneNumberField(
+        "Номер телефона",
+        region="RU",
+        unique=True
+    )
     full_name = models.CharField("ФИО", max_length=200)
 
     class Meta:
