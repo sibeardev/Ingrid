@@ -1,18 +1,21 @@
 from django.contrib import admin
-from django.db.models import Count
 
+from .models import Appointment
 from .models import Client
+from .models import Order
 from .models import Salon
 from .models import Service
+from .models import ServiceCategory
 from .models import Specialist
-from .models import Order
 from .models import SpecialistWorkDayInSalon
-from .models import Appointment
 
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ("phone_number", "full_name",)
+    list_display = (
+        "phone_number",
+        "full_name",
+    )
 
     def total_clients_count(self, obj):
         return Client.objects.count()
@@ -27,6 +30,11 @@ class SalonAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ServiceCategory)
+class ServiceCategoryAdmin(admin.ModelAdmin):
     pass
 
 

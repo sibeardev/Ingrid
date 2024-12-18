@@ -36,6 +36,15 @@ class Salon(models.Model):
         return self.title
 
 
+class ServiceCategory(models.Model):
+    """Категория услуги"""
+
+    title = models.CharField("Название", max_length=100)
+
+    def __str__(self):
+        return self.title
+
+
 class Service(models.Model):
     """Услуга"""
 
@@ -47,6 +56,13 @@ class Service(models.Model):
         upload_to="service_images/",
         db_index=True,
         blank=True,
+    )
+    category = models.ForeignKey(
+        ServiceCategory,
+        on_delete=models.CASCADE,
+        related_name="services",
+        blank=True,
+        null=True,
     )
 
     class Meta:
