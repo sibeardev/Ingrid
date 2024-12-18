@@ -66,7 +66,7 @@ color: #323232;
 }
 /* End specification*/
 
-header { 
+header {
 	background: #fff;
 padding: 23px 0 19px 0;
  }
@@ -353,7 +353,7 @@ color: #000000;
 
 opacity: 0.5;
 }
-.masters__main{ 
+.masters__main{
 	margin-top: 11px;
  }
  .masters__main_speciality {
@@ -603,7 +603,7 @@ line-height: 127.52%;
 color: #323232;
 }
 .contacts__location_date {
-	
+
 font-size: 12px;
 line-height: 127.52%;
 /* or 15px */
@@ -1223,7 +1223,7 @@ opacity: 0.3;
 /*End service.html*/
 /* serviceFinally.html*/
 .serviceFinally {
-	padding: 55px 0;	
+	padding: 55px 0;
 }
 .serviceFinally .row {
 	justify-content: space-between;
@@ -1462,7 +1462,7 @@ margin-bottom: 8px;
 .accaunt__menu_item__link {
 	text-decoration: none;
 }
-.accaunt__menu_item__link_intro{ 
+.accaunt__menu_item__link_intro{
 font-weight: 500;
 font-size: 16px;
 line-height: 22px;
@@ -1574,7 +1574,7 @@ color: #F85C5C;
 	margin-top: 17px;
 }
 .notes__main_block__main_elems__intro {
-	
+
 	font-weight: 600;
 	font-size: 10px;
 	line-height: 14px;
@@ -1836,7 +1836,7 @@ color: #FFCD07;
 	box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.02);
 	border-radius: 10px;
 	padding: 20px;
-	
+
 }
 .authPopup, .confirmPopup{text-align: center;padding-top: 35px;padding-bottom: 46px;padding-right: 0;padding-left: 0;}
 .authPopup__title {
@@ -1966,7 +1966,7 @@ height: 53px;}
 	margin-bottom: 10px;
 }
 .tipsPopup__form_inputMin {
-padding-left: 0;	
+padding-left: 0;
 text-align: center;
 width: 50px;
 
@@ -2066,7 +2066,7 @@ margin-right: 10px;
 	/*banner*/
 	.banner {
 		padding-top: 67px;
-		padding-bottom: 118px	
+		padding-bottom: 118px
 	}
 	.banner .row .col-lg-5 {
 		order: 1;
@@ -2083,7 +2083,7 @@ margin-right: 10px;
 		padding-bottom: 70px
 	}
 	.slick-list{padding:0 20% 0 0 !important;}
-	
+
 	.contacts .row .col-lg-4 {
 		order: 3;
 	}
@@ -2282,11 +2282,11 @@ color: #262626;
 	}
 	.contacts__block {
 		padding-top: 26px;
-		
+
 	}
 	.contacts__social {
 		    width: 100%;
-		padding-bottom: 9px;	
+		padding-bottom: 9px;
 		border-bottom: 1px solid rgba(0,0,0,.1);
 	}
 	.contacts__info_tel {
