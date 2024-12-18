@@ -323,6 +323,10 @@ padding: 15px;
 }
 .masters__header_img {
 	margin-right: 10px;
+	width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 .masters__header_name {
 	font-weight: 500;
