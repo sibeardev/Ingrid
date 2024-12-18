@@ -1,13 +1,14 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from .models import Salon, Specialist
+from .models import Salon, Specialist, Service
 
 
 def index(request: HttpRequest) -> HttpResponse:
     salons = Salon.objects.all()
     specialists = Specialist.objects.all()
-    context = {"salons": salons, "specialists": specialists}
+    services = Service.objects.all()
+    context = {"salons": salons, "specialists": specialists, "services": services}
 
     return render(request, "index.html", context)
 
