@@ -61,7 +61,10 @@ class Specialist(models.Model):
     """Специалист"""
 
     full_name = models.CharField("ФИО", max_length=200)
-    type_service = models.CharField("Вид услуги", max_length=50)
+    position = models.CharField("Специальность", max_length=50)
+    services = models.ManyToManyField(
+        "Service", verbose_name="Вид услуги", related_name="specialists", blank=True
+    )
     work_experience_years = models.IntegerField("Стаж (годы)", default=0)
     work_experience_months = models.IntegerField("Стаж (месяцы)", default=0)
     image = models.ImageField(
