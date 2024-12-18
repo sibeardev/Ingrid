@@ -40,7 +40,7 @@ class Service(models.Model):
     """Услуга"""
 
     title = models.CharField("Название услуги", max_length=200)
-    price = models.FloatField("Цена услуги")
+    price = models.IntegerField("Цена услуги")
     duration = models.IntegerField("Длительность услуги, мин")
     image = models.ImageField(
         "Банер услуги",
