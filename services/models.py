@@ -195,3 +195,19 @@ class Appointment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.status} {self.date} {self.salon.title} {self.client.full_name}"
+
+
+class Consultation(models.Model):
+    """Ожидают консультацию"""
+
+    name = models.CharField("Имя", max_length=50)
+    phone_number = PhoneNumberField("Номер телефона", region="RU")
+    question = models.CharField("Вопрос", max_length=300, blank=True, null=True)
+    consulted = models.BooleanField("Проконсультирован", default=False)
+
+    class Meta:
+        verbose_name = "Консультация"
+        verbose_name_plural = "Консультация"
+
+    def __str__(self) -> str:
+        return self.name

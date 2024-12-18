@@ -8,6 +8,7 @@ from .models import Specialist
 from .models import Order
 from .models import SpecialistWorkDayInSalon
 from .models import Appointment
+from .models import Consultation
 
 
 @admin.register(Client)
@@ -47,4 +48,9 @@ class SpecialistWorkDayInSalonAdmin(admin.ModelAdmin):
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Consultation)
+class ConsultationAdmin(admin.ModelAdmin):
     pass
