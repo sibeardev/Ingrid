@@ -89,6 +89,15 @@ class Specialist(models.Model):
         db_index=True,
         blank=True,
     )
+    salon = models.ForeignKey(
+        Salon,
+        related_name="workers",
+        verbose_name="Салон",
+        on_delete=models.CASCADE,
+        db_index=True,
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = "Специалист"
