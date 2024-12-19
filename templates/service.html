@@ -26,7 +26,7 @@
                     <button class="accordion">(Выберите салон)</button>
                     <div class="panel">
                         {% for salon in salons %}
-                        <div class="accordion__block fic">
+                        <div class="accordion__block fic" data-id="{{ salon.id }}">
                             <div class="accordion__block_intro">{{salon.title}}</div>
                             <div class="accordion__block_address">{{ salon.address}}</div>
                         </div>
@@ -36,21 +36,14 @@
 
                 <div class="service__form_block service__services">
                     <button class="accordion">(Выберите услугу)</button>
-                    <div class="panel">
-                        {% for category in categories %}
-                        <button class="accordion">{{ category.title }}</button>
-                        <div class="panel">
-                            <div class="accordion__block_items">
-                                {% for service in category.services.all %}
-                                <div class="accordion__block_item fic">
-                                    <div class="accordion__block_item_intro">
-                                        {{ service.title }}
-                                    </div>
-                                    <div class="accordion__block_item_address">
-                                        {{ service.price }} ₽
-                                    </div>
-                                </div>
-                                {% endfor %}
+                    <div id="servicesAccordion" class="panel">
+                        {% for service in services %}
+                        <div class="accordion__block fic" data-id="{{ service.id }}">
+                            <div class="accordion__block_item_intro">
+                                {{ service.title }}
+                            </div>
+                            <div class="accordion__block_item_address">
+                                {{ service.price }} ₽
                             </div>
                         </div>
                         {% endfor %}
@@ -60,21 +53,26 @@
 
                 <div class="service__form_block service__masters">
                     <button class="accordion">(Выберите мастера)</button>
-                    <div class="panel">
-                        <div class="accordion__block fic">
+                    <div id="mastersAccordion" class="panel">
+
+                        <div class="accordion__block fic" data-id="any_master">
                             <div class="accordion__block_elems fic">
-                                <img src="{% static 'img/masters/avatar/all.svg' %}" alt="avatar"
+                                <img src="{% static 'img/masters/avatar/all.svg' %}"
+                                     alt="avatar"
                                      class="accordion__block_img">
                                 <div class="accordion__block_master">Любой мастер</div>
                             </div>
                         </div>
                         {% for specialist in specialists %}
-                        <div class="accordion__block fic">
-						  	<div class="accordion__block_elems fic">
-							  	<img src="{{ specialist.image.url }}" alt="avatar" class="accordion__block_img">
-							  	<div class="accordion__block_master">{{ specialist.full_name }}</div>
-						  	</div>
-						  	<div class="accordion__block_prof">{{ specialist.position }}</div>
+                        <div class="accordion__block fic" data-id="{{ specialist.id }}">
+                            <div class="accordion__block_elems fic">
+                                <img src="{{ specialist.image.url }}" alt="avatar"
+                                     class="accordion__block_img">
+                                <div class="accordion__block_master">{{ specialist.full_name }}
+                                </div>
+                            </div>
+                            <div class="accordion__block_prof">{{ specialist.position }}
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
@@ -151,4 +149,8 @@
         </div>
     </div>
 </section>
+<script>
+    const anyMasterImageUrl = "{% static 'img/masters/avatar/all.svg' %}";
+</script>
+
 {% endblock %}

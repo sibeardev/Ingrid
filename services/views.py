@@ -22,7 +22,12 @@ def notes(request: HttpRequest) -> HttpResponse:
 
 
 def service(request: HttpRequest) -> HttpResponse:
-    return render(request, "service.html")
+    salons = Salon.objects.all()
+    specialists = Specialist.objects.all()
+    services = Service.objects.all()
+    context = {"salons": salons, "specialists": specialists, "services": services}
+
+    return render(request, "service.html", context)
 
 
 def service_finally(request: HttpRequest) -> HttpResponse:
