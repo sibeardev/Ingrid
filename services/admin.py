@@ -53,4 +53,4 @@ class AppointmentAdmin(admin.ModelAdmin):
 
 @admin.register(Consultation)
 class ConsultationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("name", "phone_number", "consulted")

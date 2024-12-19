@@ -208,6 +208,7 @@ class Consultation(models.Model):
     class Meta:
         verbose_name = "Консультация"
         verbose_name_plural = "Консультация"
+        ordering = ["consulted"]
 
     def __str__(self) -> str:
-        return self.name
+        return f"{self.name} {self.consulted}"
