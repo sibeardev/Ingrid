@@ -54,13 +54,13 @@ def service_finally(request: HttpRequest) -> HttpResponse:
     return render(request, "serviceFinally.html")
 
 
-def consultation(request):
-    if request.method == "POST":
-        name = request.POST.get('fname')
-        phone = request.POST.get('tel')
-        question = request.Post.get('contactsTextarea')
-        Consultation.objects.create(name=name, phone_number=phone, question=question)
-        messages.success(request, 'Запись на консультацию отправлена. Наш менеджер свяжется с вами в ближайшее время.')
-        return redirect('index')
-
-    return render(request, 'index.html')
+# def consultation(request):
+#     if request.method == "POST":
+#         name = request.POST.get('fname')
+#         phone = request.POST.get('tel')
+#         question = request.Post.get('contactsTextarea')
+#         Consultation.objects.create(name=name, phone_number=phone, question=question)
+#         messages.success(request, 'Запись на консультацию отправлена. Наш менеджер свяжется с вами в ближайшее время.')
+#         return redirect('index')
+#
+#     return render(request, 'index.html')
