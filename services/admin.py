@@ -3,6 +3,7 @@ from django.db.models import Count
 
 from .models import Client
 from .models import Salon
+from .models import ServiceType
 from .models import Service
 from .models import Specialist
 from .models import Order
@@ -25,6 +26,9 @@ class ClientAdmin(admin.ModelAdmin):
 class SalonAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(ServiceType)
+class ServiceTypeAdmin(admin.ModelAdmin):
+    pass
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
