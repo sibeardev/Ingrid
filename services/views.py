@@ -21,7 +21,6 @@ def index(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             form.save()
             messages.success(request, "Заявка успешно создана")
-            print("Сообщение добавлено!")
             return render(request, "index.html", {
                 "salons": salons,
                 "specialists": specialists,
@@ -52,15 +51,3 @@ def service(request: HttpRequest) -> HttpResponse:
 
 def service_finally(request: HttpRequest) -> HttpResponse:
     return render(request, "serviceFinally.html")
-
-
-# def consultation(request):
-#     if request.method == "POST":
-#         name = request.POST.get('fname')
-#         phone = request.POST.get('tel')
-#         question = request.Post.get('contactsTextarea')
-#         Consultation.objects.create(name=name, phone_number=phone, question=question)
-#         messages.success(request, 'Запись на консультацию отправлена. Наш менеджер свяжется с вами в ближайшее время.')
-#         return redirect('index')
-#
-#     return render(request, 'index.html')
