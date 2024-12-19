@@ -41,3 +41,29 @@ def get_services_and_specialists(request: HttpRequest, salon_id: int) -> List[di
     ]
 
     return [{"specialists": specialists_data, "services": services_data}]
+
+
+@api.get("/specialists/", response=List[dict])
+def get_specialists_by_service(
+    request: HttpRequest, service_id, salon_id: int = None
+) -> List[dict]:
+    """
+    Получить специалистов, связанных с определённой услугой.
+    Если передан salon_id, то фильтруем по этому салону.
+    """
+    specialists_queryset = Specialist.objects.filter(services__id=service_id)
+
+    if salon_id:
+        specialists_queryset = specialists_queryset.filter(salon__id=salon_id)
+
+    specialists = [
+        {
+            "id": specialist.id,
+            "full_name": specialist.full_name,
+            "position": specialist.position,
+            "image_url": specialist.image.url if specialist.image else None,
+        }
+        for specialist in specialists_queryset
+    ]
+
+    return [{"specialists": specialists}]

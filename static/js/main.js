@@ -8,27 +8,32 @@ function loadServicesAndSpecialists(url) {
         success: function (data) {
             if (data.length > 0) {
                 // Генерация Услуг
-                let servicesHtml = '';
-                if (data[0].services.length > 0) {
-                    servicesHtml = data[0].services.map(service => `
+                if (data[0].services) {
+                    let servicesHtml = '';
+                    if (data[0].services.length > 0) {
+                        servicesHtml = data[0].services.map(service => `
                         <div class="accordion__block fic" data-id="${service.id}">
                             <div class="accordion__block_item_intro">${service.title}</div>
                             <div class="accordion__block_item_address">${service.price} ₽</div>
                         </div>
                 `).join("");
-                } else {
-                    servicesHtml = `
+                    } else {
+                        servicesHtml = `
                     <div class="accordion__block fic">
                         <div class="accordion__block_elems fic">
                             <div class="accordion__block_master">Нет доступных услуг</div>
                         </div>
                     </div>
-                `}
+                `;
+                    }
+                    serviceContainer.html(servicesHtml);
+                }
 
                 // Генерация специалистов
-                let specialistsHtml = '';
-                if (data[0].specialists.length > 0) {
-                    specialistsHtml = `
+                if (data[0].specialists) {
+                    let specialistsHtml = '';
+                    if (data[0].specialists.length > 0) {
+                        specialistsHtml = `
                     <div class="accordion__block fic" data-id="any_master">
                         <div class="accordion__block_elems fic">
                             <img src="${anyMasterImageUrl}" alt="avatar" class="accordion__block_img">
@@ -44,17 +49,17 @@ function loadServicesAndSpecialists(url) {
                         <div class="accordion__block_prof">${specialist.position}</div>
                     </div>
                 `).join("");
-                } else {
-                    specialistsHtml = `
+                    } else {
+                        specialistsHtml = `
                     <div class="accordion__block fic">
                         <div class="accordion__block_elems fic">
                             <div class="accordion__block_master">Нет доступных специалистов</div>
                         </div>
                     </div>
-                `}
-
-                serviceContainer.html(servicesHtml);
-                specialistsContainer.html(specialistsHtml);
+                `;
+                    }
+                    specialistsContainer.html(specialistsHtml);
+                }
             } else {
                 serviceContainer.html("<p>Нет доступных услуг в этом салоне.</p>");
                 specialistsContainer.html("<p>Нет доступных специалистов для этой услуги.</p>");
@@ -196,7 +201,7 @@ $(document).ready(function() {
     })
 
     new AirDatepicker('#datepickerHere')
-
+    localStorage.removeItem('selectedSalonId');
     var acc = document.getElementsByClassName("accordion");
     var i;
 
@@ -213,7 +218,6 @@ $(document).ready(function() {
     }
 
 
-
     // САЛОН
     $(document).on('click', '.service__salons .accordion__block', function(e) {
 
@@ -221,6 +225,8 @@ $(document).ready(function() {
         let salonId = $(this).data('id');
         const url = `/api/services/?salon_id=${salonId}`;
         loadServicesAndSpecialists(url);
+
+        localStorage.setItem('selectedSalonId', salonId);
 
         let thisName,thisAddress;
         thisName = $(this).find('> .accordion__block_intro').text()
@@ -236,7 +242,7 @@ $(document).ready(function() {
 
         $('.service__masters button.accordion')
             .removeClass('selected active')
-            .text('(Выберите специалист)');
+            .text('(Выберите мастера)');
 
         // Закрыть панель с выбором салона
         setTimeout(() => {
@@ -250,6 +256,14 @@ $(document).ready(function() {
 
     //УСЛУГА
     $(document).on('click', '.service__services .accordion__block', function(e) {
+
+        // Загрузить специалистов
+        let serviceId = $(this).data('id');
+        let selectedSalonId = localStorage.getItem('selectedSalonId');
+        let salonId = selectedSalonId ? selectedSalonId : '';
+        const url = salonId ? `/api/specialists/?service_id=${serviceId}&salon_id=${salonId}` : `/api/specialists/?service_id=${serviceId}`;
+        loadServicesAndSpecialists(url);
+
         let thisName,thisAddress;
         thisName = $(this).find('> .accordion__block_item_intro').text()
         thisAddress = $(this).find('> .accordion__block_item_address').text()
@@ -257,6 +271,12 @@ $(document).ready(function() {
         $(this).parent().parent().find('> button.active').addClass('selected').text(thisName + '  ' +thisAddress)
         // $(this).parent().parent().parent().parent().find('> button.active').click()
         // $(this).parent().parent().parent().addClass('hide')
+
+        // Сброс кнопок выбора специалиста
+        $('.service__masters button.accordion')
+            .removeClass('selected active')
+            .text('(Выберите мастера)');
+
         setTimeout(() => {
             $(this).parent().parent().find('> button.active').click()
         }, 200)
