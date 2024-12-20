@@ -5,7 +5,7 @@ from .models import Client
 from .models import Order
 from .models import Salon
 from .models import Service
-from .models import ServiceCategory
+from .models import ServiceType
 from .models import Specialist
 from .models import SpecialistWorkDayInSalon
 
@@ -33,8 +33,8 @@ class ServiceAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(ServiceCategory)
-class ServiceCategoryAdmin(admin.ModelAdmin):
+@admin.register(ServiceType)
+class ServiceTypeAdmin(admin.ModelAdmin):
     pass
 
 
