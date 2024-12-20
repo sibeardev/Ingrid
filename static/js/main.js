@@ -9,7 +9,7 @@ $(document).ready(function() {
 	    {
 	      breakpoint: 991,
 	      settings: {
-	        
+
 	      	centerMode: true,
   			//centerPadding: '60px',
 	        slidesToShow: 2
@@ -32,7 +32,7 @@ $(document).ready(function() {
 	  	{
 	      breakpoint: 1199,
 	      settings: {
-	        
+
 
 	        slidesToShow: 3
 	      }
@@ -40,7 +40,7 @@ $(document).ready(function() {
 	    {
 	      breakpoint: 991,
 	      settings: {
-	        
+
 	      	centerMode: true,
   			//centerPadding: '60px',
 	        slidesToShow: 2
@@ -64,7 +64,7 @@ $(document).ready(function() {
 	  	{
 	      breakpoint: 1199,
 	      settings: {
-	        
+
 
 	        slidesToShow: 3
 	      }
@@ -72,7 +72,7 @@ $(document).ready(function() {
 	    {
 	      breakpoint: 991,
 	      settings: {
-	        
+
 
 	        slidesToShow: 2
 	      }
@@ -95,7 +95,7 @@ $(document).ready(function() {
 	  	{
 	      breakpoint: 1199,
 	      settings: {
-	        
+
 
 	        slidesToShow: 3
 	      }
@@ -103,7 +103,7 @@ $(document).ready(function() {
 	    {
 	      breakpoint: 991,
 	      settings: {
-	        
+
 
 	        slidesToShow: 2
 	      }
@@ -135,9 +135,9 @@ $(document).ready(function() {
 	  	e.preventDefault()
 	    this.classList.toggle("active");
 	    var panel = $(this).next()
-	    panel.hasClass('active') ?  
+	    panel.hasClass('active') ?
 	    	 panel.removeClass('active')
-	    	: 
+	    	:
 	    	 panel.addClass('active')
 	  });
 	}
@@ -148,8 +148,8 @@ $(document).ready(function() {
 
 		thisName = $(this).find('> .accordion__block_intro').text()
 		thisAddress = $(this).find('> .accordion__block_address').text()
-		
-		
+
+
 		if(thisName === 'BeautyCity Пушкинская') {
 			$('.service__masters > .panel').html(`
 				<div class="accordion__block fic">
@@ -199,13 +199,13 @@ $(document).ready(function() {
 							  	<div class="accordion__block_master">Анастасия Сергеева</div>
 						  	</div>
 						  	<div class="accordion__block_prof">Визажист</div>
-						  </div>	
+						  </div>
 			`)
 			// $('.service__masters div[data-masters="Pushkinskaya"]').addClass('vib')
 		}
 		console.log(thisName)
 		if(thisName === 'BeautyCity Ленина') {
-			
+
 			$('.service__masters > .panel').html(`
 				<div class="accordion__block fic">
 						  	<div class="accordion__block_elems fic">
@@ -308,18 +308,18 @@ $(document).ready(function() {
 						  	<div class="accordion__block_prof">Визажист</div>
 						  </div>
 			`)
-			
+
 		}
 
 		$(this).parent().parent().find('> button.active').addClass('selected').text(thisName + '  ' +thisAddress)
 		setTimeout(() => {
 			$(this).parent().parent().find('> button.active').click()
 		}, 200)
-		
+
 		// $(this).parent().addClass('hide')
 
 		// console.log($(this).parent().parent().find('.panel').hasClass('selected'))
-		
+
 		// $(this).parent().parent().find('.panel').addClass('selected')
 	})
 
@@ -366,7 +366,7 @@ $(document).ready(function() {
 
 	// })
 	// $('.accordion.selected').click(function() {
-	// 	$(this).parent().find('.panel').hasClass('selected') ? 
+	// 	$(this).parent().find('.panel').hasClass('selected') ?
 	// 	 $(this).parent().find('.panel').removeClass('selected')
 	// 		:
 	// 	$(this).parent().find('.panel').addClass('selected')
@@ -377,10 +377,9 @@ $(document).ready(function() {
 	$('.header__block_auth').click(function(e) {
 		e.preventDefault()
 		$('#authModal').arcticmodal();
-		// $('#confirmModal').arcticmodal();
+		$('#confirmModal').arcticmodal();
 
 	})
-
 	$('.rewiewPopupOpen').click(function(e) {
 		e.preventDefault()
 		$('#reviewModal').arcticmodal();
@@ -393,7 +392,7 @@ $(document).ready(function() {
 		e.preventDefault()
 		$('#tipsModal').arcticmodal();
 	})
-	
+
 	$('.authPopup__form').submit(function() {
 		$('#confirmModal').arcticmodal();
 		return false
@@ -412,7 +411,7 @@ $(document).ready(function() {
 			$('.time__btns_next').addClass('active')
 		}
 	})
-	
+
 
 
 })

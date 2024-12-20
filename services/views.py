@@ -42,6 +42,10 @@ def manager_page(request: HttpRequest) -> HttpResponse:
 
 
 def notes(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        print("POST-запрос получен")  # Лог для проверки
+        return redirect('notes')  # Перенаправление
+    print("GET-запрос получен")
     return render(request, "notes.html")
 
 
