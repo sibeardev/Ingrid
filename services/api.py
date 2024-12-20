@@ -16,11 +16,9 @@ def get_services_and_specialists(request: HttpRequest, salon_id: int) -> List[di
     Получить услуги и специалистов, связанных с салоном.
     """
 
-    specialists = Specialist.objects.filter(salon_id=salon_id).prefetch_related(
-        Prefetch("services")
-    )
-
-    services = Service.objects.filter(specialists__salon_id=salon_id).distinct()
+    specialist_workdays = SpecialistWorkDayInSalon.objects.filter(salon_id=salon_id).select_related('specialist')
+    specialists = [sw.specialist for sw in specialist_workdays]
+    services = Service.objects.filter(specialists__in=specialists).distinct()
 
     specialists_data = [
         {
@@ -55,7 +53,10 @@ def get_specialists_by_service(
     specialists_queryset = Specialist.objects.filter(services__id=service_id)
 
     if salon_id:
-        specialists_queryset = specialists_queryset.filter(salon__id=salon_id)
+        if salon_id:
+            specialist_workdays = SpecialistWorkDayInSalon.objects.filter(salon_id=salon_id).select_related('specialist')
+            specialists_in_salon = [sw.specialist for sw in specialist_workdays]
+            specialists_queryset = specialists_queryset.filter(id__in=[s.id for s in specialists_in_salon])
 
     specialists = [
         {
