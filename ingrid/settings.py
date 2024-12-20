@@ -113,3 +113,6 @@ STATICFILES_DIRS = [
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+API_YUMANI_KEY = env.str("API_YUMANI_KEY")
+SHOP_ID = env.str("SHOP_ID")

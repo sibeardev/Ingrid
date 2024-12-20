@@ -1,10 +1,15 @@
-from django.http import HttpRequest, HttpResponse
+import uuid
+
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 
 from .models import Salon, Specialist, Service
 from .forms import ConsultationForm
+from ingrid.settings import API_YUMANI_KEY, SHOP_ID
+
+from yookassa import Configuration, Payment
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -55,3 +60,22 @@ def service(request: HttpRequest) -> HttpResponse:
 
 def service_finally(request: HttpRequest) -> HttpResponse:
     return render(request, "serviceFinally.html")
+
+
+def payment(request):
+    """Оплата заказа."""
+    Configuration.account_id = SHOP_ID
+    Configuration.secret_key = API_YUMANI_KEY
+    payment = Payment.create({
+        "amount": {
+            "value": "100",
+            "currency": "RUB"
+        },
+        "confirmation": {
+            "type": "redirect",
+            "return_url": "http://127.0.0.1:8000/notes/"
+        },
+        "capture": True,
+        "description": "Оплата заказа"
+    }, uuid.uuid4())
+    return HttpResponseRedirect(payment.confirmation.confirmation_url)
