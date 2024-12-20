@@ -275,6 +275,7 @@ $(document).ready(function() {
     });
 
     localStorage.removeItem('selectedSalonId');
+    localStorage.removeItem('selectedServiceId');
     localStorage.removeItem('selectedSpecialistId');
 
     var acc = document.getElementsByClassName("accordion");
@@ -341,6 +342,8 @@ $(document).ready(function() {
         let thisName,thisAddress;
         thisName = $(this).find('> .accordion__block_item_intro').text()
         thisAddress = $(this).find('> .accordion__block_item_address').text()
+
+        localStorage.setItem('selectedServiceId', serviceId);
 
         $(this).parent().parent().find('> button.active').addClass('selected').text(thisName + '  ' +thisAddress)
         // $(this).parent().parent().parent().parent().find('> button.active').click()
@@ -439,5 +442,20 @@ $(document).ready(function() {
         }
     })
 
-})
+    $('#nextButton').click(function () {
+        const selectedDate = $('#datepickerHere').val();
+        const selectedTime = $('.time__elems_btn.active').data('time');
+        const selectedSpecialistId = localStorage.getItem('selectedSpecialistId');
+        const selectedServiceId = localStorage.getItem('selectedServiceId') || '';
 
+        if (!selectedDate || !selectedTime || !selectedSpecialistId ) {
+            alert("Выберите мастера, дату и время");
+            return;
+        }
+
+        const url = `/service-finally/?date=${selectedDate}&time=${selectedTime}&specialist_id=${selectedSpecialistId}&service_id=${selectedServiceId}`;
+
+        window.location.href = url;
+    });
+
+})
