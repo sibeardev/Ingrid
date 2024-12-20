@@ -1188,6 +1188,10 @@ opacity: 0.3;
 	padding-left: 23px;
 }
 .accordion__block_img {
+	width: 100px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 50%;
 	margin-right: 10px;
 }
 .accordion__block_master {
