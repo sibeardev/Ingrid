@@ -317,7 +317,7 @@ $(document).ready(function() {
         $('.service__masters button.accordion')
             .removeClass('selected active')
             .text('(Выберите мастера)');
-
+        $(".time__elems").empty();
         // Закрыть панель с выбором салона
         setTimeout(() => {
             $(this).parent().parent().find('> button.active').click()
@@ -350,7 +350,7 @@ $(document).ready(function() {
         $('.service__masters button.accordion')
             .removeClass('selected active')
             .text('(Выберите мастера)');
-
+        $(".time__elems").empty();
         setTimeout(() => {
             $(this).parent().parent().find('> button.active').click()
         }, 200)
@@ -367,6 +367,7 @@ $(document).ready(function() {
     $(document).on('click', '.service__masters .accordion__block', function(e) {
         const specialistId = $(this).data('id');
         localStorage.setItem('selectedSpecialistId', specialistId);
+        $(".time__elems").empty();
         let clone = $(this).clone()
         console.log(clone)
         $(this).parent().parent().find('> button.active').addClass('selected').html(clone)
