@@ -36,12 +36,16 @@ class Salon(models.Model):
         return self.title
 
 
-class ServiceCategory(models.Model):
-    """Категория услуги"""
+class ServiceType(models.Model):
+    """Тип услуги"""
 
-    title = models.CharField("Название", max_length=100)
+    title = models.CharField("Название типа услуги", max_length=200)
 
-    def __str__(self):
+    class Meta:
+        verbose_name = "Тип услуги"
+        verbose_name_plural = "Типы услуг"
+
+    def __str__(self) -> str:
         return self.title
 
 
@@ -49,6 +53,12 @@ class Service(models.Model):
     """Услуга"""
 
     title = models.CharField("Название услуги", max_length=200)
+    s_type = models.ForeignKey(
+        ServiceType,
+        on_delete=models.PROTECT,
+        verbose_name='Тип услуги',
+        related_name='services'
+    )
     price = models.IntegerField("Цена услуги")
     duration = models.IntegerField("Длительность услуги, мин")
     image = models.ImageField(
@@ -56,13 +66,6 @@ class Service(models.Model):
         upload_to="service_images/",
         db_index=True,
         blank=True,
-    )
-    category = models.ForeignKey(
-        ServiceCategory,
-        on_delete=models.CASCADE,
-        related_name="services",
-        blank=True,
-        null=True,
     )
 
     class Meta:
@@ -89,15 +92,6 @@ class Specialist(models.Model):
         db_index=True,
         blank=True,
     )
-    salon = models.ForeignKey(
-        Salon,
-        related_name="workers",
-        verbose_name="Салон",
-        on_delete=models.CASCADE,
-        db_index=True,
-        blank=True,
-        null=True,
-    )
 
     class Meta:
         verbose_name = "Специалист"
@@ -105,40 +99,6 @@ class Specialist(models.Model):
 
     def __str__(self) -> str:
         return self.full_name
-
-
-class Order(models.Model):
-    """Счёт (статус оплаты)"""
-
-    STATUS = [
-        ("waiting", "Ожидает оплаты"),
-        ("paid", "Оплачено"),
-        ("cancel", "Отменено"),
-    ]
-
-    client = models.ForeignKey(
-        Client, on_delete=models.PROTECT, verbose_name="Клиент", related_name="orders"
-    )
-    status = models.CharField(
-        "Статус заказа", max_length=14, choices=STATUS, default="waiting"
-    )
-    total_amount = models.DecimalField(
-        "Сумма заказа",
-        max_digits=10,
-        decimal_places=2,
-        blank=True,
-        null=True,
-    )
-    receipt = models.URLField("Чек", blank=True)
-    created_at = models.DateTimeField("Счёт выставлен", auto_now_add=True)
-    updated_at = models.DateTimeField("Последнее обновление", auto_now=True)
-
-    class Meta:
-        verbose_name = "Счет оплаты"
-        verbose_name_plural = "Счета оплаты"
-
-    def __str__(self) -> str:
-        return f"{self.updated_at} {self.client.full_name} {self.status}"
 
 
 class SpecialistWorkDayInSalon(models.Model):
@@ -153,10 +113,6 @@ class SpecialistWorkDayInSalon(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Специалист",
         related_name="workdays",
-    )
-    services = models.ManyToManyField(
-        Service,
-        verbose_name="Услуги",
     )
     start_at = models.TimeField("Начало рабочего дня")
     end_at = models.TimeField("Окончание рабочего дня")
@@ -205,12 +161,6 @@ class Appointment(models.Model):
         verbose_name="Услуга",
         related_name="appointments",
     )
-    order = models.ForeignKey(
-        Order,
-        on_delete=models.PROTECT,
-        verbose_name="Заказ",
-        related_name="appointments",
-    )
     date = models.DateField("Дата записи")
     start_at = models.TimeField("Время начала")
 
@@ -220,3 +170,55 @@ class Appointment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.status} {self.date} {self.salon.title} {self.client.full_name}"
+
+
+class Order(models.Model):
+    """Счёт (статус оплаты)"""
+
+    STATUS = [
+        ("waiting", "Ожидает оплаты"),
+        ("paid", "Оплачено"),
+        ("cancel", "Отменено"),
+    ]
+
+    appointment = models.ForeignKey(
+        Appointment, on_delete=models.PROTECT, verbose_name="Заказ", related_name="orders"
+    )
+    status = models.CharField(
+        "Статус заказа", max_length=14, choices=STATUS, default="waiting"
+    )
+    total_amount = models.DecimalField(
+        "Сумма заказа",
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+    )
+    receipt = models.URLField("Чек", blank=True)
+    created_at = models.DateTimeField("Счёт выставлен", auto_now_add=True)
+    updated_at = models.DateTimeField("Последнее обновление", auto_now=True)
+
+    class Meta:
+        verbose_name = "Счет оплаты"
+        verbose_name_plural = "Счета оплаты"
+
+    def __str__(self) -> str:
+        return f"{self.updated_at} {self.client.full_name} {self.status}"
+
+
+
+class Consultation(models.Model):
+    """Ожидают консультацию"""
+
+    name = models.CharField("Имя", max_length=50)
+    phone_number = PhoneNumberField("Номер телефона", region="RU")
+    question = models.CharField("Вопрос", max_length=300, blank=True, null=True)
+    consulted = models.BooleanField("Проконсультирован", default=False)
+
+    class Meta:
+        verbose_name = "Консультация"
+        verbose_name_plural = "Консультация"
+        ordering = ["consulted"]
+
+    def __str__(self) -> str:
+        return f"{self.name} {self.consulted}"

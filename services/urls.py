@@ -10,4 +10,5 @@ urlpatterns = [
     path("service/", views.service, name="service"),
     path("service-finally/", views.service_finally, name="service_finally"),
     path("api/", api.urls),
+    path('index/', views.index, name='index'),
 ]

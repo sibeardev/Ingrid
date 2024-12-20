@@ -38,7 +38,7 @@
 											<div class="serviceFinally__form_content__date">{{ date }}</div>
 										</div>
 									</div>
-									
+
 								</div>
 							</div>
 							<div class="serviceFinally__form_itesm">
@@ -48,16 +48,17 @@
 										<input type="text" name="tel" class="contacts__form_iunput" placeholder="+7(999)999--99-99" required="">
 									</div>
 								</div>
-								
+
 								<textarea name="contactsTextarea" class="contacts__form_textarea" placeholder="Вопрос(необязательно)"></textarea>
 								<div class="contacts__form_checkboxBlock fic">
 									<input type="checkbox" class="contacts__form_checkbox" checked="">
-									<span class="contacts__form_checkboxBlock__intro">Я согласен(а) с политикой конфидециоальности</span>
+									<span class="contacts__form_checkboxBlock__intro">
+										Я согласен(а) <a href="static/documents/approval.pdf" target="_blank"> с политикой конфидециоальности</span>
 								</div>
 								<button type="submit" class="serviceFinallys__form_btn">Записаться</button>
 								<button type="submit" class="serviceFinallys__form_back">Назад</button>
 							</div>
-						</form>	
+						</form>
 					</div>
 					<div class="col-md-12 col-lg-5">
 						<img src="{% static 'img/bannerImg.svg' %}" alt="bannerImg" class="banner__img">
@@ -82,7 +83,8 @@
 				</div>
 				<div class="contacts__form_checkboxBlock fic">
 					<input type="checkbox" class="contacts__form_checkbox" checked="">
-					<span class="contacts__form_checkboxBlock__intro">Я согласен(а) с политикой конфидециоальности</span>
+					<span class="contacts__form_checkboxBlock__intro">
+						Я согласен(а) <a href="static/documents/approval.pdf" target="_blank"> с политикой конфидециоальности</span>
 				</div>
 				<button type="submit" class="popup__btn authPopup__btn">Отправить</button>
 			</form>
