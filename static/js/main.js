@@ -73,6 +73,65 @@ function loadServicesAndSpecialists(url) {
     });
 }
 
+function loadSpecialistWorkday(specialistId, date) {
+    console.log(date)
+    const url = `/api/specialist_workday/?specialist_id=${specialistId}&selected_date=${date}`;
+    $.ajax({
+        url: url,
+        method: "GET",
+        success: function (data) {
+            if (data.length > 0) {
+                const timeslots = data[0].timeslots;
+                const timeContainer = $(".time__elems");
+                timeContainer.empty();
+
+                // Функция для создания разметки блока времени
+                const createTimeBlock = (timePeriod, times) => {
+                    if (times.length === 0) return "";
+
+                    const buttonsHtml = times.map(
+                        time => `<button data-time="${time}" class="time__elems_btn">${time}</button>`
+                    ).join("");
+
+                    return `
+                        <div class="time__items">
+                            <div class="time__elems_intro">${timePeriod}</div>
+                            <div class="time__elems_elem fic">
+                                ${buttonsHtml}
+                            </div>
+                        </div>
+                    `;
+                };
+
+                // Если все интервалы пустые
+                const isAllTimeSlotsEmpty =
+                (!timeslots.morning || timeslots.morning.length === 0) &&
+                (!timeslots.day || timeslots.day.length === 0) &&
+                (!timeslots.evening || timeslots.evening.length === 0);
+                if (isAllTimeSlotsEmpty) {
+                    timeContainer.html(`<div class="time__items">Нет доступного времени</div>`);
+                    return;
+                }
+
+                // Генерация разметки для каждого периода времени
+                const morningHtml = createTimeBlock("Утро", timeslots.morning);
+                const dayHtml = createTimeBlock("День", timeslots.day);
+                const eveningHtml = createTimeBlock("Вечер", timeslots.evening);
+
+                timeContainer.append(morningHtml + dayHtml + eveningHtml);
+
+            } else {
+                $(".time__elems").html(`<div class="time__items">Нет доступного времени</div>`);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Ошибка загрузки рабочих часов:", error);
+            $(".time__elems").html(`<div class="time__items">Ошибка загрузки данных</div>`);
+        }
+    });
+}
+
+
 $(document).ready(function() {
     $('.salonsSlider').slick({
         arrows: true,
@@ -200,11 +259,26 @@ $(document).ready(function() {
         $('#mobMenu').hide()
     })
 
-    new AirDatepicker('#datepickerHere')
+    //    КАЛЕНДАРЬ
+    new AirDatepicker('#datepickerHere', {
+        language: 'ru',
+        dateFormat: 'yyyy-MM-dd',
+        minDate: new Date(),
+        onSelect: function ({ formattedDate }) {
+            const specialistId = localStorage.getItem('selectedSpecialistId');
+            if (specialistId) {
+                loadSpecialistWorkday(specialistId, formattedDate);
+            } else {
+                console.error("Специалист не выбран!");
+            }
+        }
+    });
+
     localStorage.removeItem('selectedSalonId');
+    localStorage.removeItem('selectedSpecialistId');
+
     var acc = document.getElementsByClassName("accordion");
     var i;
-
     for (i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function(e) {
             e.preventDefault()
@@ -291,6 +365,8 @@ $(document).ready(function() {
 
     //МАСТЕР
     $(document).on('click', '.service__masters .accordion__block', function(e) {
+        const specialistId = $(this).data('id');
+        localStorage.setItem('selectedSpecialistId', specialistId);
         let clone = $(this).clone()
         console.log(clone)
         $(this).parent().parent().find('> button.active').addClass('selected').html(clone)
@@ -348,13 +424,13 @@ $(document).ready(function() {
         return false
     })
 
-    //service
-    $('.time__items .time__elems_elem .time__elems_btn').click(function(e) {
-        e.preventDefault()
-        $('.time__elems_btn').removeClass('active')
-        $(this).addClass('active')
-        // $(this).hasClass('active') ? $(this).removeClass('active') : $(this).addClass('active')
-    })
+    //    КНОПКИ ВРЕМЕНИ
+    $(document).on('click', '.time__items .time__elems_elem .time__elems_btn', function(e) {
+        e.preventDefault();
+        $('.time__elems_btn').removeClass('active');
+        $(this).addClass('active');
+    });
+
 
     $(document).on('click', '.servicePage', function() {
         if($('.time__items .time__elems_elem .time__elems_btn').hasClass('active') && $('.service__form_block > button').hasClass('selected')) {
