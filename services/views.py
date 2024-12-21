@@ -13,6 +13,8 @@ from .models import (
     ServiceType,
     SpecialistWorkDayInSalon,
     CustomUser,
+    Appointment,
+    Client,
 )
 
 
@@ -150,3 +152,51 @@ def service_finally(request: HttpRequest) -> HttpResponse:
     }
 
     return render(request, "serviceFinally.html", context)
+
+
+def confirm_appointment(request: HttpRequest) -> HttpResponse:
+    """Создание записи на услугу"""
+    if request.method == "POST":
+        specialist_id = request.POST.get("specialist_id")
+        time = request.POST.get("time")
+        date = datetime.fromtimestamp(int(request.POST.get("date"))).date()
+        service_id = request.POST.get("service_id")
+        phone_number = request.POST.get("tel")
+        full_name = request.POST.get("fname")
+
+        client, created = Client.objects.update_or_create(
+            phone_number=phone_number, defaults={"full_name": full_name}
+        )
+        if created:
+            client.save()
+
+        workday = (
+            SpecialistWorkDayInSalon.objects.select_related("salon", "specialist")
+            .prefetch_related("specialist__services")
+            .filter(
+                specialist_id=specialist_id,
+                workday=date,
+            )
+            .first()
+        )
+
+        service = (
+            Service.objects.get(id=service_id)
+            if service_id
+            else workday.specialist.services.first()
+        )
+
+        appointment, created = Appointment.objects.get_or_create(
+            salon=workday.salon,
+            specialist=workday.specialist,
+            service=service,
+            date=date,
+            start_at=time,
+            client=client,
+        )
+        if created:
+            appointment.save()
+
+        return redirect("notes")
+    else:
+        return HttpResponse("Метод не поддерживается", status=405)

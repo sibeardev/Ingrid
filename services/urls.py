@@ -12,4 +12,5 @@ urlpatterns = [
     path("api/", api.urls),
     path("index/", views.index, name="index"),
     path("auth/", views.auth, name="auth"),
+    path("confirm_appointment/", views.confirm_appointment, name="confirm_appointment"),
 ]

@@ -14,7 +14,8 @@
 						<div class="service__block">
 							<h1 class="service__title">Запись на услугу</h1>
 						</div>
-						<form action="#" class="serviceFinally__form">
+						<form method="POST" action="{% url 'confirm_appointment' %}" class="serviceFinally__form">
+							{% csrf_token %}
 							<div class="serviceFinally__form_block">
 								<div class="serviceFinally__form_header fic">
 									<span class="serviceFinally__form_header__number">Запись №32985</span>
@@ -38,7 +39,6 @@
 											<div class="serviceFinally__form_content__date">{{ date }}</div>
 										</div>
 									</div>
-
 								</div>
 							</div>
 							<div class="serviceFinally__form_itesm">
@@ -58,6 +58,10 @@
 								<button type="submit" class="serviceFinallys__form_btn">Записаться</button>
 								<button type="submit" class="serviceFinallys__form_back">Назад</button>
 							</div>
+							    <input type="hidden" name="specialist_id" value="{{ specialist.id }}">
+								<input type="hidden" name="time" value="{{ time }}">
+								<input type="hidden" name="date" value="{{ date|date:'U' }}">
+								<input type="hidden" name="service_id" value="{{ service.id }}">
 						</form>
 					</div>
 					<div class="col-md-12 col-lg-5">
