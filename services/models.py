@@ -23,7 +23,7 @@ class Client(models.Model):
 
     phone_number = PhoneNumberField("Номер телефона", region="RU", unique=True)
     full_name = models.CharField("ФИО", max_length=200)
-    place = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = "Клиент"
