@@ -1188,7 +1188,7 @@ opacity: 0.3;
 	padding-left: 23px;
 }
 .accordion__block_img {
-	width: 100px;
+	width: 40px;
     height: auto;
     object-fit: cover;
     border-radius: 50%;
@@ -1218,6 +1218,10 @@ line-height: 127.52%;
 color: #000000;
 
 opacity: 0.3;
+}
+
+.air-datepicker.-inline- {
+	width: 100%;
 }
 
 .air-datepicker-cell.-selected-, .air-datepicker-cell.-selected-.-focus- {

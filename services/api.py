@@ -16,9 +16,28 @@ def get_services_and_specialists(request: HttpRequest, salon_id: int) -> List[di
     Получить услуги и специалистов, связанных с салоном.
     """
 
+    # Получаем специалистов, работающих в данном салоне
     specialist_workdays = SpecialistWorkDayInSalon.objects.filter(salon_id=salon_id).select_related('specialist')
     specialists = [sw.specialist for sw in specialist_workdays]
-    services = Service.objects.filter(specialists__in=specialists).distinct()
+
+    # Получаем услуги, предоставляемые специалистами в данном салоне
+    services = Service.objects.filter(specialists__in=specialists).distinct().select_related('s_type')
+
+    # Группируем услуги по типам услуг
+    service_types = {}
+    for service in services:
+        service_type = service.s_type
+        if service_type.id not in service_types:
+            service_types[service_type.id] = {
+                "id": service_type.id,
+                "title": service_type.title,
+                "services": []
+            }
+        service_types[service_type.id]["services"].append({
+            "id": service.id,
+            "title": service.title,
+            "price": service.price,
+        })
 
     specialists_data = [
         {
@@ -30,16 +49,7 @@ def get_services_and_specialists(request: HttpRequest, salon_id: int) -> List[di
         for specialist in specialists
     ]
 
-    services_data = [
-        {
-            "id": service.id,
-            "title": service.title,
-            "price": service.price,
-        }
-        for service in services
-    ]
-
-    return [{"specialists": specialists_data, "services": services_data}]
+    return [{"specialists": specialists_data, "service_types": list(service_types.values())}]
 
 
 @api.get("/specialists/", response=List[dict])

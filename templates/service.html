@@ -36,18 +36,25 @@
 
                 <div class="service__form_block service__services">
                     <button class="accordion">(Выберите услугу)</button>
-                    <div id="servicesAccordion" class="panel">
-                        {% for service in services %}
-                        <div class="accordion__block fic" data-id="{{ service.id }}">
-                            <div class="accordion__block_item_intro">
-                                {{ service.title }}
+                    <div class="panel">
+                        {% for service_type in service_types %}
+                        <button class="accordion">{{ service_type.title }}</button>
+                            <div id="servicesAccordion" class="panel">
+                                    <div class="accordion__block_items">
+                                        {% for service in service_type.services %}
+                                        <div class="accordion__block_item fic" data-id="{{ service.id }}">
+                                            <div class="accordion__block_item_intro">
+                                                {{ service.title }}
+                                            </div>
+                                            <div class="accordion__block_item_address">
+                                                {{ service.price }} ₽
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
                             </div>
-                            <div class="accordion__block_item_address">
-                                {{ service.price }} ₽
-                            </div>
-                        </div>
                         {% endfor %}
-                    </div>
+                    </div> 
                 </div>
 
 
@@ -92,7 +99,30 @@
                     </div>
                     <div class="col-md-8">
                         <div class="time__elems">
-                            <!--Временные интервалы-->
+                            <div class="time__items">
+                                <div class="time__elems_intro">Утро</div>
+                                <div class="time__elems_elem fic">
+                                    <button data-time="10:00" class="time__elems_btn">10:00</button>
+                                    <button data-time="10:30" class="time__elems_btn">10:30</button>
+                                </div>
+                            </div>
+                            <div class="time__items">
+                                <div class="time__elems_intro">День</div>
+                                <div class="time__elems_elem fic">
+                                    <button data-time="12:00" class="time__elems_btn">12:00</button>
+                                    <button data-time="12:30" class="time__elems_btn">12:30</button>
+                                    <button data-time="15:00" class="time__elems_btn">15:00</button>
+                                    <button data-time="16:30" class="time__elems_btn">16:30</button>
+                                </div>
+                            </div>
+                            <div class="time__items">
+                                <div class="time__elems_intro">Вечер</div>
+                                <div class="time__elems_elem fic">
+                                    <button data-time="17:00" class="time__elems_btn">17:00</button>
+                                    <button data-time="18:30" class="time__elems_btn">18:30</button>
+                                    <button data-time="19:00" class="time__elems_btn">19:00</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

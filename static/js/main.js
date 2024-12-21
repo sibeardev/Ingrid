@@ -330,7 +330,7 @@ $(document).ready(function() {
     })
 
     //УСЛУГА
-    $(document).on('click', '.service__services .accordion__block', function(e) {
+    $(document).on('click', '.service__services .accordion__block_item', function(e) {
 
         // Загрузить специалистов
         let serviceId = $(this).data('id');
@@ -345,17 +345,17 @@ $(document).ready(function() {
 
         localStorage.setItem('selectedServiceId', serviceId);
 
-        $(this).parent().parent().find('> button.active').addClass('selected').text(thisName + '  ' +thisAddress)
-        // $(this).parent().parent().parent().parent().find('> button.active').click()
+        $(this).parent().parent().parent().parent().find('> button.active').addClass('selected').text(thisName + '  ' +thisAddress)
+		 // $(this).parent().parent().parent().parent().find('> button.active').click()
         // $(this).parent().parent().parent().addClass('hide')
 
-        // Сброс кнопок выбора специалиста
-        $('.service__masters button.accordion')
-            .removeClass('selected active')
-            .text('(Выберите мастера)');
-        $(".time__elems").empty();
+        //!!!!!!!!!! Сброс кнопок выбора специалиста
+        // $('.service__masters button.accordion')
+        //     .removeClass('selected active')
+        //     .text('(Выберите мастера)');
+        // $(".time__elems").empty();
         setTimeout(() => {
-            $(this).parent().parent().find('> button.active').click()
+            $(this).parent().parent().parent().parent().find('> button.active').click()
         }, 200)
     })
 

@@ -5,9 +5,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 
-from .models import Salon, Specialist, Service, SpecialistWorkDayInSalon
+from .models import Salon, Specialist, Service, ServiceType, SpecialistWorkDayInSalon
 from .forms import ConsultationForm
-
+from .api import get_services_and_specialists
 
 def index(request: HttpRequest) -> HttpResponse:
     salons = Salon.objects.all()
@@ -52,10 +52,38 @@ def notes(request: HttpRequest) -> HttpResponse:
 
 
 def service(request: HttpRequest) -> HttpResponse:
+    # Получаем все типы услуг и связанные с ними услуги
+    service_types = ServiceType.objects.all().prefetch_related('services')
+
+    # Получаем все салоны
     salons = Salon.objects.all()
+
+    # Получаем всех специалистов
     specialists = Specialist.objects.all()
-    services = Service.objects.all()
-    context = {"salons": salons, "specialists": specialists, "services": services}
+
+    # Формируем данные для шаблона
+    service_types_data = []
+    for service_type in service_types:
+        services_data = [
+            {
+                "id": service.id,
+                "title": service.title,
+                "price": service.price,
+            }
+            for service in service_type.services.all()
+        ]
+        service_types_data.append({
+            "id": service_type.id,
+            "title": service_type.title,
+            "services": services_data,
+        })
+
+    # Передаем данные в контекст шаблона
+    context = {
+        "salons": salons,
+        "specialists": specialists,
+        "service_types": service_types_data,
+    }
 
     return render(request, "service.html", context)
 
