@@ -91,7 +91,11 @@
 						<a href="{% url 'main_page' %}#contacts"><button class="header__block_btn">Перезвоните мне</button></a>
 						<div class="header__block_auth">
 							<img src="{% static 'img/acc.svg' %}" alt="account" class="header__account_img">
-							<span class="header__block_auth__intro">Войти</span>
+							{% if request.user.is_authenticated %}
+                                <span class="header__block_auth__intro">{{ request.user.phone_number }}</span>
+                            {% else %}
+                                <span class="header__block_auth__intro">Войти</span>
+                            {% endif %}
 						</div>
 					</div>
 					</div>
@@ -181,11 +185,8 @@
 			<div class="authPopup popup">
 			    <div class="popup__title authPopup__title">Войти</div>
 			    <p class="popup__text authPopup__text">Введите ваше имя и номер телефона</p>
-			    <form method="POST" action="{% url 'notes' %}" class="authPopup__form" id="authForm">
+			    <form method="POST" action="{% url 'auth' %}" class="authPopup__form" id="authForm">
 						{% csrf_token %}
-			        <div class="contacts__form_inputBlock">
-			            <input type="text" name="name" class="contacts__form_iunput" placeholder="Ваше имя" required>
-			        </div>
 			        <div class="contacts__form_inputBlock">
 			            <input type="text" name="tel" id="phoneInput" class="contacts__form_iunput" placeholder="+7 (999) 999-99-99" required>
 			        </div>

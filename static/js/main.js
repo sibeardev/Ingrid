@@ -425,7 +425,6 @@ $(document).ready(function() {
 
     $('.authPopup__form').submit(function() {
         $('#confirmModal').arcticmodal();
-        return false
     })
 
     //    КНОПКИ ВРЕМЕНИ

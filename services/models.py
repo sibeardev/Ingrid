@@ -1,5 +1,21 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+
+
+class CustomUser(AbstractUser):
+    """Пользователь сайта"""
+
+    phone_number = PhoneNumberField("Номер телефона", region="RU", unique=True)
+    USERNAME_FIELD = "phone_number"
+    REQUIRED_FIELDS = ["username"]
+
+    def __str__(self):
+        return f"{self.username} {self.phone_number}"
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
 
 
 class Client(models.Model):
@@ -7,6 +23,7 @@ class Client(models.Model):
 
     phone_number = PhoneNumberField("Номер телефона", region="RU", unique=True)
     full_name = models.CharField("ФИО", max_length=200)
+    place = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = "Клиент"
@@ -56,8 +73,8 @@ class Service(models.Model):
     s_type = models.ForeignKey(
         ServiceType,
         on_delete=models.PROTECT,
-        verbose_name='Тип услуги',
-        related_name='services'
+        verbose_name="Тип услуги",
+        related_name="services",
     )
     price = models.IntegerField("Цена услуги")
     duration = models.IntegerField("Длительность услуги, мин")
@@ -182,7 +199,10 @@ class Order(models.Model):
     ]
 
     appointment = models.ForeignKey(
-        Appointment, on_delete=models.PROTECT, verbose_name="Заказ", related_name="orders"
+        Appointment,
+        on_delete=models.PROTECT,
+        verbose_name="Заказ",
+        related_name="orders",
     )
     status = models.CharField(
         "Статус заказа", max_length=14, choices=STATUS, default="waiting"
@@ -204,7 +224,6 @@ class Order(models.Model):
 
     def __str__(self) -> str:
         return f"{self.updated_at} {self.client.full_name} {self.status}"
-
 
 
 class Consultation(models.Model):
